@@ -1,7 +1,7 @@
 const DB = [];
 
 function saveDB(user) {
-    const oldDBSize = DB.length;
+    const oldDBSize = DB.length + 1;
     DB.push(user);
     console.log(`save ${user.name} to DB`);
     return new Promise((resolve, reject) => { //콜백 대신 promise 객체
@@ -27,13 +27,17 @@ function getResult(user) {
 }
 
 function registerByPromise(user) { //비동기 호출이지만 순서대로 실행
-    const result = saveDB(user).then(sendEmail).then(getResult);
+    const result = saveDB(user)
+                    .then(sendEmail)
+                    .then(getResult)
+                    .catch(error => new Error(error))
+                    .finally(() => console.log("완료"));
     console.log(result);
     return result;
 }
 
 const myUser = {email : "uk@naver.com", pw : "123" , name : "uk"};
-/* const result = registerByPromise(myUser);
-result.then(console.log); */
+const result = registerByPromise(myUser);
+result.then(console.log);
 allResult = Promise.all([saveDB(myUser),sendEmail(myUser), getResult(myUser)]);
 allResult.then(console.log);
