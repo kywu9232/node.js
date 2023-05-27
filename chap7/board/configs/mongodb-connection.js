@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-const uri = "mongodb+srv://kywu9232:<password>@cluster0.sofpfol.mongodb.net/test";
+const uri = "mongodb+srv://uk9232:Psyche1710@cluster0.ilt33tq.mongodb.net/test";
 
 module.exports = function (callback) {
     return MongoClient.connect(uri, callback);

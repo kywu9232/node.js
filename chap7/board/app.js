@@ -15,16 +15,21 @@ app.set("views", __dirname + "/views"); //절대경로 지정 __dirname node = �
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.get("/", async(req,res)=> {
+    const page =  parseInt(req.query.page) || 1; // ||이전값이 빈 값이거나 null인경우의 기본값
+    const search = req.query.search || "";
+    try {
+        const [posts,paginator] = await postService.list(collection, page, search);
 
-
-app.get("/", (req,res) => {
-    res.render("home", {title: "테스트 게시판", message: "반갑습니다"});
-});
+        res.render("home", {title: "테스트게시판", search, paginator, posts});
+    } catch (error){
+        console.error(error);
+        res.render("home",{title: "테스트 게시판"});
+    }
+})
 
 app.get("/write", async (req,res) => {
-    const post = req.body;
-    const result = await postService.writePost(collection,post);
-    res.redirect(`/detail/${result.insertId}`);
+    res.render("write", {title: "테스트 게시판"});
 });
 
 app.get("/detail/:id", async (req,res) =>{
@@ -41,4 +46,5 @@ app.listen(3000, async () => {
     console.log("mongoDB connected");
 });
 
-//260
+
+
