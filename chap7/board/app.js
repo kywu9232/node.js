@@ -29,13 +29,19 @@ app.get("/", async(req,res)=> {
 })
 
 app.get("/write", async (req,res) => {
+    res.render("write", {title: "테스트 게시판"});
+});
+app.post("/write",async (req,res) =>{
     const post = req.body;
-    const result = await postService.writePost(collection, post)
-    res.render(`detail/${result.insertedId}`);
+    const result = await postService.writePost(collection, post);
+    res.redirect(`/detail/${result.insertId}`);
 });
 
 app.get("/detail/:id", async (req,res) =>{
-    res.render("detail", {title: "테스트 게시판"});
+    const result = await postService.getDetailPost(collection, req.params.id);
+    res.render("detail", {
+        title: "테스트 게시판",
+        post: result.value,});
 });
 
 let collection;

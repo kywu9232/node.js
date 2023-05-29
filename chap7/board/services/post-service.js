@@ -1,4 +1,5 @@
 const paginator = require("../utils/paginator");
+const { ObjectId } = require("mongodb");
 
 async function writePost(collection, post) {
     post.hits = 0;
@@ -6,7 +7,7 @@ async function writePost(collection, post) {
     return await collection.insertOne(post);
 }
 
-/* async function list(collection, page, search) {
+async function list(collection, page, search) {
     const perPage = 10;
     const query = {title: new RegExp(search, "i")}; //title이 search와 부분일치하는지 확인
     // limit는 10개만 가져온다는 의미, skip은 설정된 갯수 만큼 건너뜀, 생성일 역순으로 정렬
@@ -20,8 +21,21 @@ async function writePost(collection, post) {
     //paginator 생성
     const paginatorObj = paginator({totalCount, page, perPage : perPage});
     return [posts, paginatorObj];
-} */
+}
+
+const projectionOption = { //패스워드는 노출할 필요 없으므로 결괏값 x 272p
+    projection: {
+        password: 0,
+        "comments.password" : 0,
+    },   
+};
+
+async function getDetailPost(collection, id) {
+    return await collection.findOneAndUpdate({ _id:ObjectId(id)}, { $inc: {hits:1}}, projectionOption);
+}
 
 module.exports = {
+    list,
     writePost,
+    getDetailPost,
 };

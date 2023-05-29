@@ -3,5 +3,5 @@ module.exports = {
 
     eq: (var1,var2) => var1 === var2,
 
-    dataString: (isoString) => new Date(isoString).toLocaleDateString(),
+    dateString: (isoString) => new Date(isoString).toLocaleDateString(),
 };
