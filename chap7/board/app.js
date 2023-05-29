@@ -29,7 +29,9 @@ app.get("/", async(req,res)=> {
 })
 
 app.get("/write", async (req,res) => {
-    res.render("write", {title: "테스트 게시판"});
+    const post = req.body;
+    const result = await postService.writePost(collection, post)
+    res.render(`detail/${result.insertedId}`);
 });
 
 app.get("/detail/:id", async (req,res) =>{
