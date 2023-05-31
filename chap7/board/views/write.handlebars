@@ -2,7 +2,7 @@
 
 <div>
     <!--글쓰기 폼-->
-    <form name="boardForm" method="post" {{#if (eq mode"create")}}action="/write" {{else}}action="/modify"{{/if}}>
+    <form name="boardForm" method="post" {{#if (eq mode "create")}}action="/write" {{else}}action="/modify"{{/if}}>
     {{#if (eq mode "modify")}}
     <input type="hidden" name="id" value="{{post._id}}"/>
     {{/if}}
